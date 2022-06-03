@@ -4,7 +4,7 @@ import Header from './components/Header';
 import {BrowserRouter , Routes , Route} from "react-router-dom"
 import Cards from './components/Cards';
 import CartDetails from './components/CartDetails';
-import "./components/Style.css"
+import "./components/style.css"
 
 
 function App() {

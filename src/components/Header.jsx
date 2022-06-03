@@ -28,7 +28,9 @@ const Header = () => {
               Home
             </NavLink>
           </Nav>
-          <Badge badgeContent={4} color="primary"
+          <Badge
+            badgeContent={4}
+            color="primary"
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}
             aria-haspopup="true"
@@ -49,9 +51,13 @@ const Header = () => {
             "aria-labelledby": "basic-button",
           }}
         >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem onClick={handleClose}>My account</MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
+          <div className="card_details d-flex justify-content-center align-items-center" style={{ width: "24rem" , padding:10 , position:"relative" }}>
+            <i onClick={handleClose} className="fas fa-close smallclose" style={{position:"absolute", top:4,right:20,cursor:"pointer" }}></i>
+            
+              <p>Your cart is empty</p>
+              <ShoppingCartIcon style={{ color: "green", fontSize: "5rem", padding:"20px" }} />
+            
+          </div>
         </Menu>
       </Navbar>
     </div>
