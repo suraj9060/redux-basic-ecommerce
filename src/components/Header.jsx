@@ -1,11 +1,16 @@
 import React,{useState} from 'react'
-import { Navbar, Container, Nav, NavLink } from "react-bootstrap"
+import { Navbar, Container, Nav,  Table } from "react-bootstrap"
 import  ShoppingCartIcon  from "@mui/icons-material/ShoppingCart";
 import { Badge } from '@mui/material';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useSelector } from "react-redux"
+import { NavLink } from 'react-router-dom';
 
 const Header = () => {
+
+  const getData = useSelector(state => state.cartreducer.Carts);
+  console.log(getData)
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -29,7 +34,7 @@ const Header = () => {
             </NavLink>
           </Nav>
           <Badge
-            badgeContent={4}
+            badgeContent={getData.length}
             color="primary"
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}
@@ -51,13 +56,88 @@ const Header = () => {
             "aria-labelledby": "basic-button",
           }}
         >
-          <div className="card_details d-flex justify-content-center align-items-center" style={{ width: "24rem" , padding:10 , position:"relative" }}>
-            <i onClick={handleClose} className="fas fa-close smallclose" style={{position:"absolute", top:4,right:20,cursor:"pointer" }}></i>
-            
+          {getData.length ? (
+            <div
+              className="cart_details"
+              style={{ width: "24rem", padding: 10 }}
+            >
+              <Table>
+                <thead>
+                  <tr>
+                    <th>Photo</th>
+                    <th>Restaurant Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getData.map((e) => {
+                    return (
+                      <>
+                        <tr>
+                          <td>
+                            <NavLink to={`/cart/${e.id}`}>
+                              <img
+                                src={e.imgdata}
+                                style={{ width: "5rem", height: "5rem" }}
+                                alt="img"
+                              />
+                            </NavLink>
+                          </td>
+                          <td>
+                            <p>{e.rname}</p>
+                            <p>
+                              <strong>Price</strong> ₹{e.price}
+                            </p>
+                            <p>Quantity {e.qnty}</p>
+                            <p
+                              style={{
+                                color: "red",
+                                fontSize: 20,
+                                cursor: "pointer",
+                              }}
+                            >
+                              <i className="fas fa-trash smalltrash"></i>
+                            </p>
+                          </td>
+                          <td
+                            className="mt-5"
+                            style={{
+                              color: "red",
+                              fontSize: 20,
+                              cursor: "pointer",
+                            }}
+                          >
+                            <i className="fas fa-trash largetrash"></i>
+                          </td>
+                        </tr>
+                      </>
+                    );
+                  })}
+                  <p className='text-center'>Total : ₹ 300</p>
+                </tbody>
+              </Table>
+            </div>
+          ) : (
+            <div
+              className="card_details d-flex justify-content-center align-items-center"
+              style={{ width: "24rem", padding: 10, position: "relative" }}
+            >
+              <i
+                onClick={handleClose}
+                className="fas fa-close smallclose"
+                style={{
+                  position: "absolute",
+                  top: 4,
+                  right: 20,
+                  cursor: "pointer",
+                }}
+              ></i>
+
               <p>Your cart is empty</p>
-              <ShoppingCartIcon style={{ color: "green", fontSize: "5rem", padding:"20px" }} />
-            
-          </div>
+              <ShoppingCartIcon
+                style={{ color: "green", fontSize: "5rem", padding: "20px" }}
+              />
+            </div>
+          )}
         </Menu>
       </Navbar>
     </div>

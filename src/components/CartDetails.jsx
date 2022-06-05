@@ -2,6 +2,12 @@ import React from 'react'
 import { Table } from 'react-bootstrap';
 
 const CartDetails = () => {
+
+  
+
+
+
+
   return (
     <div className="container mt-2">
       <h2 className="text-center">Item Details Page</h2>

@@ -14,7 +14,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/' element={<Cards />} />
-          <Route path='/cart' element={<CartDetails />} />
+          <Route path='/cart/:id' element={<CartDetails />} />
         </Routes>
       </BrowserRouter>
     </div>
