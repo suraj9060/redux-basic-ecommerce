@@ -5,9 +5,16 @@ export const ADD = (item) => {
     }
 }
 
-export const REMOVE = (item) => {
+export const REMOVE = (id) => {
     return {
         type: "REMOVE_FROM_CART",
-        payload:item
+        payload:id
+    }
+}
+
+export const REMOVEONE = (item) => {
+    return {
+        type: "RMV_ITEM_ONE",
+        payload : item
     }
 }

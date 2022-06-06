@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import {ADD, REMOVE , REMOVEONE} from "../redux/action/Action"
 
 const CartDetails = () => {
 
   const [data , setData] = useState([])
  console.log(data)
   const { id } = useParams()
+  const dispatch = useDispatch();
+  const history = useNavigate()
+
   // console.log(id)
     const getData = useSelector((state) => state.cartreducer.Carts);
     // console.log(getData);
@@ -23,7 +27,18 @@ const CartDetails = () => {
     compare()
   },[id])
 
+  const send = (e) => {
+    dispatch(ADD(e))
+  }
 
+  const rmv = (id) => {
+    dispatch(REMOVE(id))
+    history("/")
+  }
+  //rempve one
+  const remove =(item) => {
+     dispatch(REMOVEONE(item))
+  }
   return (
     <div className="container mt-2">
       <h2 className="text-center">Item Details Page</h2>
@@ -34,10 +49,7 @@ const CartDetails = () => {
               return (
                 <>
                   <div className="items_img">
-                    <img
-                      src={element.imgdata}
-                      alt=""
-                    />
+                    <img src={element.imgdata} alt="" />
                   </div>
 
                   <div className="details">
@@ -54,8 +66,21 @@ const CartDetails = () => {
                             <strong>Dishex</strong> : {element.address}
                           </p>
                           <p>
-                            <strong>Total</strong> : ₹ 500
+                            <strong>Total</strong> : ₹ {element.price * element.qnty}
                           </p>
+                          <div
+                            className="mt-5 d-flex justify-content-between align-items-center"
+                            style={{
+                              width: 100,
+                              cursor: "pointer",
+                              background: "#ddd",
+                              color: "#111",
+                            }}
+                          >
+                            <span style={{ fontSize: 24 }} onClick={element.qnty <= 0 ? rmv(element.id) :()=>remove(element)}>-</span>
+                            <span style={{ fontSize: 24 }}>{ element.qnty}</span>
+                            <span style={{ fontSize: 24 }} onClick={ ()=>send(element)}>+</span>
+                          </div>
                         </td>
                         <td>
                           <p>
@@ -78,10 +103,11 @@ const CartDetails = () => {
                           </p>
 
                           <p>
-                            <strong>Rating :</strong>{" "}
+                            <strong>Remove :</strong>{" "}
                             <span>
                               <i
                                 className="fas fa-trash"
+                                onClick={() => rmv(element.id)}
                                 style={{
                                   color: "red",
                                   padding: "10px",

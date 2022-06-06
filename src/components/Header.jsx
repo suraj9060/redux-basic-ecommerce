@@ -1,16 +1,21 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import { Navbar, Container, Nav,  Table } from "react-bootstrap"
 import  ShoppingCartIcon  from "@mui/icons-material/ShoppingCart";
 import { Badge } from '@mui/material';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { NavLink } from 'react-router-dom';
+import {REMOVE} from "../redux/action/Action"
 
 const Header = () => {
-
+  const [price, setPrice] = useState(0)
+  
+   
+    
   const getData = useSelector(state => state.cartreducer.Carts);
-  console.log(getData)
+  // console.log(getData)
+  const dispatch = useDispatch()
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -19,8 +24,23 @@ const Header = () => {
     };
     const handleClose = () => {
       setAnchorEl(null);
-    };
-    
+  };
+  
+  const rmv = (id) => {
+    dispatch(REMOVE(id))
+  }
+
+  const total = () => {
+    let price = 0;
+    getData.map((ele, k)=>{
+      price = ele.price *ele.qnty + price
+    });
+    setPrice(price)
+  };
+
+   useEffect(() => {
+     total();
+   }, [total]);
   return (
     <div>
       <Navbar bg="dark" variant="dark" style={{ height: "60px" }}>
@@ -74,7 +94,7 @@ const Header = () => {
                       <>
                         <tr>
                           <td>
-                            <NavLink to={`/cart/${e.id}`}>
+                            <NavLink to={`/cart/${e.id}`} onClick={handleClose}>
                               <img
                                 src={e.imgdata}
                                 style={{ width: "5rem", height: "5rem" }}
@@ -95,7 +115,7 @@ const Header = () => {
                                 cursor: "pointer",
                               }}
                             >
-                              <i className="fas fa-trash smalltrash"></i>
+                              <i className="fas fa-trash smalltrash" onClick={()=>rmv(e.id)}></i>
                             </p>
                           </td>
                           <td
@@ -106,13 +126,13 @@ const Header = () => {
                               cursor: "pointer",
                             }}
                           >
-                            <i className="fas fa-trash largetrash"></i>
+                            <i className="fas fa-trash largetrash" onClick={()=>rmv(e.id)}></i>
                           </td>
                         </tr>
                       </>
                     );
                   })}
-                  <p className='text-center'>Total : ₹ 300</p>
+                  <p className='text-center'>Total : ₹ {price}</p>
                 </tbody>
               </Table>
             </div>
